@@ -36,8 +36,16 @@ class UpdateDataJson(argparse.Action):
 
     def create_json_file(self):
         if not os.path.isfile(FILE_NAME):
+            data = {
+                "Personal": {
+                    "Region": "INSERT REGION HERE",
+                    "Search": "INSERT SEARCH HERE"
+                },
+                "Keywords": {}
+            }
+
             with open(FILE_NAME, "w") as file:
-                file.write("{\n\t\"Personal\": {\n\t\t\"Region\": \"INSERT REGION HERE\",\n\t\t\"Search\": \"INSERT SEARCH HERE\"\n\t},\n\t\"Keywords\": {\n\t}\n}")
+                json.dump(data, file)
 
 class AddKeyword(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):

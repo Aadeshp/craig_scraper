@@ -1,6 +1,6 @@
 # How To Set Up
 1. Set up [python virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
-2. Pull this repository by running the command ```git pull https://github.com/Aadeshp/craig_scraper.git```
+2. Pull this repository by running the command ```git clone https://github.com/Aadeshp/craig_scraper.git```
 3. Change directories in the folder
 4. Run the command ```pip install -r requirements.txt```
 5. Run the command ```python craig_scraper --update-region [REGION ABBREV. HERE] --update-search [SEARCH ABBREV. HERE]```

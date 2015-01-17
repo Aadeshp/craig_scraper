@@ -5,26 +5,20 @@ from pprint import pprint
 from bs4 import BeautifulSoup
 from collections import namedtuple
 from cs_arg_parse import initArgParse
+from JSONReader import JSONReader
 
 # Post Tuple containing a post's Title and Url Extension
 Post = namedtuple("Post", ["title", "url_ext"])
 
 class CraigsList:
-    def __init__(self, city="sandiego"):
-        self.city = city
-        self.base_url = "https://" + self.city + ".craigslist.org/"
-        
-        """Parse JSON data from JSON file"""
-        with open("keywords.json") as file:
-            self.keywords = json.load(file)
-        
-        """Add a Queue key to each value in the JSON"""
-        for key, value in self.keywords.items():
-            value["posts"] = queue.PriorityQueue()
+    def __init__(self, region, search, keywords):
+        self.base_url = "https://" + region + ".craigslist.org/"
+        self.search = search
+        self.keywords = keywords
 
-    def get_urls(self, search="sof"):
+    def get_urls(self):
         """Gets and returns all the url extension for each post"""
-        html = requests.get("http://sandiego.craigslist.org/search/%s?sort=rel" % search).text
+        html = requests.get("%ssearch/%s?sort=rel" % (self.base_url, self.search)).text
         soup = BeautifulSoup(html)
         return [a.attrs.get('href') for a in soup.select('div.content a.hdrlnk')]
 
@@ -45,10 +39,14 @@ class CraigsList:
     def collect_data(self, url, keywords):
         """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
         html = requests.get(self.base_url + url).text
-        print("Scraping %s words from %s" % (len(html), url))
+        print("Scanning %s Words From %s" % (len(html), url))
         soup = BeautifulSoup(html)
         
-        find = soup.body.find(text=re.compile("Java|Python"))
+        compile_search = []
+        for key in keywords:
+            compile_search.append(key)
+
+        find = soup.body.find(text=re.compile("|".join(compile_search)))
         
         if find:
             for key, value in keywords.items():
@@ -87,7 +85,11 @@ class CraigsList:
 if __name__ == "__main__":
     start = time.time()
     p = initArgParse()
-    c = CraigsList()
-    c.query()
+
+    if len(sys.argv) < 2:
+        j = JSONReader("data.json")
+        c = CraigsList(j.get_region(), j.get_search(), j.get_keywords())
+        c.query()
+
     end = time.time()
     print("Runtime: %f Seconds" % (end - start))

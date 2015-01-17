@@ -5,7 +5,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from collections import namedtuple
 
-"""Post Tuple containing a post's Title and Url Extension"""
+# Post Tuple containing a post's Title and Url Extension
 Post = namedtuple("Post", ["title", "url_ext"])
 
 class CraigsList:
@@ -13,23 +13,22 @@ class CraigsList:
         self.city = city
         self.base_url = "https://" + self.city + ".craigslist.org/"
 
-    """Gets and returns all the url extension for each post"""
     def get_urls(self, search="sof"):
+        """Gets and returns all the url extension for each post"""
         html = requests.get("http://sandiego.craigslist.org/search/sof?sort=rel").text
- #       html = urlopen("http://sandiego.craigslist.org/search/sof?sort=rel").read()
         soup = BeautifulSoup(html)
         return [a.attrs.get('href') for a in soup.select('div.content a[href*html]')]
-    
-    """Creates a thread for each post to retrieve the data and then prints the overall data"""
+
     def query(self):
+        """Creates a thread for each post to retrieve the data and then prints the overall data"""
         self.keywords = {
             "Java": {
                 "freq": 0,
                 "posts": queue.PriorityQueue()
             },
         }
-        
-        """Start a thread for each post and then join them into the main thread"""
+
+        # Start a thread for each post and then join them into the main thread
         threads = [threading.Thread(target=self.collect_data, args=(url, self.keywords)) for url in self.get_urls()]
 
         for t in threads:
@@ -37,11 +36,11 @@ class CraigsList:
 
         for t in threads:
             t.join()
-        
+
         print(self)
-    
-    """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
+
     def collect_data(self, url, keywords):
+        """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
         html = requests.get(self.base_url + url).text
         #html = urlopen(self.base_url + url).read()
         print("Scraping %s words from %s" % (len(html), url))
@@ -50,12 +49,12 @@ class CraigsList:
         if soup.body.find(text=re.compile("Java")):
             keywords["Java"]["freq"] += 1
             keywords["Java"]["posts"].put(Post(soup.title.string, url))
-    
-    """
-    Prints all the data
-    Base Url, Number of Results, and All the Results with their Title and Url Extension
-    """
+
     def __str__(self):
+        """
+        Prints all the data
+        Base Url, Number of Results, and All the Results with their Title and Url Extension
+        """
         output = []
 
         dash = []
@@ -75,7 +74,7 @@ class CraigsList:
             output.append("{:<70} {:<40}".format(q.title, q.url_ext))
 
         return "\n".join(output)
-        
+
 if __name__ == "__main__":
     start = time.time()
     c = CraigsList()

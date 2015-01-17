@@ -1,0 +1,17 @@
+{
+    "Personal": {
+        "Search": "cta",
+        "Region": "cnj"
+    },
+    "Keywords": {
+        "Audi": {
+            "freq": 0
+        },
+        "audi": {
+            "freq": 0
+        },
+        "AUDI": {
+            "freq": 0
+        }
+    }
+}

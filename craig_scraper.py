@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import sys, time, re, queue, threading, requests, json, argparse
-from pprint import pprint
 from bs4 import BeautifulSoup
 from collections import namedtuple
 from cs_arg_parse import initArgParse

@@ -1,3 +1,8 @@
+# Modules
+- BeautifulSoup
+- Queue
+- Requests
+
 # How To Set Up
 1. Set up [python virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
 2. Pull this repository by running the command ```git clone https://github.com/Aadeshp/craig_scraper.git```

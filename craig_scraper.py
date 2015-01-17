@@ -15,7 +15,7 @@ class CraigsList:
 
     def get_urls(self, search="sof"):
         """Gets and returns all the url extension for each post"""
-        html = requests.get("http://sandiego.craigslist.org/search/sof?sort=rel").text
+        html = requests.get("http://sandiego.craigslist.org/search/%s?sort=rel" % search).text
         soup = BeautifulSoup(html)
         return [a.attrs.get('href') for a in soup.select('div.content a[href*html]')]
 
@@ -80,4 +80,4 @@ if __name__ == "__main__":
     c = CraigsList()
     c.query()
     end = time.time()
-    print("Runtime: %d Seconds" % (end - start))
+    print("Runtime: %f Seconds" % (end - start))

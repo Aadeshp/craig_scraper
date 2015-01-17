@@ -20,6 +20,7 @@ class CraigsList:
         """Gets and returns all the url extension for each post"""
         html = requests.get("%ssearch/%s?sort=rel" % (self.base_url, self.search)).text
         soup = BeautifulSoup(html)
+
         return [a.attrs.get('href') for a in soup.select('div.content a.hdrlnk')]
 
     def query(self):
@@ -38,7 +39,11 @@ class CraigsList:
 
     def collect_data(self, url, keywords):
         """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
-        html = requests.get(self.base_url + url).text
+        if "http" in url:
+            html = requests.get(url).text
+        else:
+            html = requests.get(self.base_url + url).text
+
         print("Scanning %s Words From %s" % (len(html), url))
         soup = BeautifulSoup(html)
         

@@ -54,7 +54,7 @@ class CraigsList:
         
         if find:
             for key, value in keywords.items():
-                if key in find:
+                if key.lower() in find:
                     value["freq"] += 1
                     value["posts"].put(Post(soup.title.string, url))
 

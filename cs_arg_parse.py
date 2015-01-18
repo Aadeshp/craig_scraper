@@ -50,18 +50,22 @@ class UpdateDataJson(argparse.Action):
 class AddKeyword(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("k", values)
+        print("Keyword(s): " + str(values) + " Added")
 
 class UpdateRegion(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("r", values)
+        print("Region Updated To: " + values[0])
 
 class UpdateSearch(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("s", values)
+        print("Search Updated To: " + values[0])
 
 class RemoveKeywords(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("rm", values)
+        print("All Keywords Removed")
 
 def initArgParse():
     parser = argparse.ArgumentParser()

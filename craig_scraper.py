@@ -44,17 +44,17 @@ class CraigsList:
             html = requests.get(self.base_url + url).text
 
         print("Scanning %s Words From %s" % (len(html), url))
-        soup = BeautifulSoup(html.lower())
+        soup = BeautifulSoup(html)
         
         compile_search = []
         for key in keywords:
-            compile_search.append(key.lower())
+            compile_search.append(key)
 
-        find = soup.body.find(text=re.compile("|".join(compile_search)))
+        find = soup.body.find(text=re.compile("|".join(compile_search), re.IGNORECASE))
         
         if find:
             for key, value in keywords.items():
-                if key.lower() in find:
+                if key.lower() in find.lower():
                     value["freq"] += 1
                     value["posts"].put(Post(soup.title.string, url))
 

@@ -44,11 +44,11 @@ class CraigsList:
             html = requests.get(self.base_url + url).text
 
         print("Scanning %s Words From %s" % (len(html), url))
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html.lower())
         
         compile_search = []
         for key in keywords:
-            compile_search.append(key)
+            compile_search.append(key.lower())
 
         find = soup.body.find(text=re.compile("|".join(compile_search)))
         

@@ -20,7 +20,9 @@
 - --remove-keywords (This requires no arguments, but it will remove all keywords in the .json file)
 
 # Example
-1. ```python craig_scraper --update-region cnj --update-search jjj```
-2. ```python craig_scraper --add-keyword Java Python Ruby Bash C++```
-3. ```python craig_scraper```
-4. -----OUTPUT-----
+```
+$ python craig_scraper --update-region cnj --update-search jjj
+$ python craig_scraper --add-keyword Java Python Ruby Bash C++
+$ python craig_scraper
+```
+-----OUTPUT-----

@@ -48,15 +48,17 @@ class CraigsList:
         
         compile_search = []
         for key in keywords:
-            compile_search.append(key)
+            compile_search.append(re.escape(key))
 
-        find = soup.body.find(text=re.compile("|".join(compile_search), re.IGNORECASE))
-        
+        find = soup.body.find_all(text=re.compile("|".join(compile_search), re.IGNORECASE))
+
         if find:
             for key, value in keywords.items():
-                if key.lower() in find.lower():
-                    value["freq"] += 1
-                    value["posts"].put(Post(soup.title.string, url))
+                for line in find:
+                    if key.lower() in line.lower():
+                        value["freq"] += 1
+                        value["posts"].put(Post(soup.title.string, url))
+                        break
 
     def __str__(self):
         """

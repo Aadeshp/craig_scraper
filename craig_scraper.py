@@ -45,7 +45,7 @@ class CraigsList:
 
         print("Scanning %s Words From %s" % (len(html), url))
         soup = BeautifulSoup(html)
-        
+
         compile_search = []
         for key in keywords:
             compile_search.append(re.escape(key))
@@ -67,9 +67,8 @@ class CraigsList:
         """
         output = []
 
-        dash = []
-        [dash.append("-") for x in range(1, 96)]
-        output.append("".join(dash))
+        dashes = "-" * 95
+        output.append(dashes)
 
         output.append("\n\n\033[1mBase Url: %s\033[0m\n" % (self.base_url))
 
@@ -79,12 +78,11 @@ class CraigsList:
 
         for key, value in self.keywords.items():
             output.append("\n %s Results (%d)" % (key, value["freq"]))
-            output.append("".join(dash))
+            output.append(dashes)
             while not value["posts"].empty():
                 q = value["posts"].get()
-                output.append("{:<70} {:<40}".format(q.title, q.url_ext))
-
-            output.append("".join(dash))
+                output.append("%-70s %s" % (q.title, q.url_ext))
+            output.append(dashes)
 
         return "\n".join(output)
 

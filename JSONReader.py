@@ -9,8 +9,16 @@ class JSONReader:
         self.search = self.data["Personal"]["Search"]
         self.keywords = self.data["Keywords"]
 
-        for key, value in self.keywords.items():
+    @property
+    def keywords(self):
+        return self._keywords
+
+    @keywords.setter
+    def keywords(self, dict):
+        for key, value in dict.items():
             value["posts"] = queue.PriorityQueue()
+
+        self._keywords = dict
         
     def load_json(self, json_file):
         with open(json_file) as file:

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Modules
 - BeautifulSoup
 - Queue

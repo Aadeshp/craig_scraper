@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Modules
 - BeautifulSoup
 - Queue
@@ -26,3 +27,6 @@ $ python craig_scraper --add-keyword Java Python Ruby Bash C++
 $ python craig_scraper
 ```
 -----OUTPUT-----
+=======
+# craig_scraper
+>>>>>>> 89df99233be757036c6119c6874f6ab73190874e

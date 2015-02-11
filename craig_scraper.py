@@ -23,7 +23,7 @@ class CraigsList:
 
         return [a.attrs.get('href') for a in soup.select('div.content a.hdrlnk')]
 
-    def begin_queries(self, numOfPages=5):
+    def begin_queries(self, numOfPages=1):
         for i in range(0, numOfPages):
             self.pageNumber = (i * 100)
             print("Loading Page %s" % (str(i + 1)))

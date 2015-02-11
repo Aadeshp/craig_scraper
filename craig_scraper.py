@@ -14,13 +14,20 @@ class CraigsList:
         self.base_url = "https://" + region + ".craigslist.org/"
         self.search = search
         self.keywords = keywords
+        self.pageNumber = 0
 
     def get_urls(self):
         """Gets and returns all the url extension for each post"""
-        html = requests.get("%ssearch/%s?sort=rel" % (self.base_url, self.search)).text
+        html = requests.get("%ssearch/%s?s=%s&sort=rel" % (self.base_url, self.search, str(self.pageNumber))).text
         soup = BeautifulSoup(html)
 
         return [a.attrs.get('href') for a in soup.select('div.content a.hdrlnk')]
+
+    def begin_queries(self, numOfPages=5):
+        for i in range(0, numOfPages):
+            self.pageNumber = (i * 100)
+            print("Loading Page %s" % (str(i + 1)))
+            self.query()
 
     def query(self):
         """Creates a thread for each post to retrieve the data and then prints the overall data"""
@@ -34,7 +41,7 @@ class CraigsList:
         for t in threads:
             t.join()
 
-        print(self)
+        #print(self)
 
     def collect_data(self, url, keywords):
         """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
@@ -60,6 +67,8 @@ class CraigsList:
                         value["posts"].put(Post(soup.title.string, url))
                         break
 
+    
+    
     def __str__(self):
         """
         Prints all the data
@@ -93,7 +102,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         j = JSONReader("data.json")
         c = CraigsList(j.get_region(), j.get_search(), j.get_keywords())
-        c.query()
+        c.begin_queries()
+        print(c)
 
     end = time.time()
     print("Runtime: %f Seconds" % (end - start))

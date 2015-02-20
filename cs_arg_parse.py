@@ -4,7 +4,7 @@ import argparse, json, os.path
 
 FILE_NAME = "data.json"
 
-class ShowKeywords(argparse.Action):
+class ShowSettings(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         with open(FILE_NAME, "r") as file:
             print(file.read())
@@ -27,7 +27,7 @@ class UpdateDataJson(argparse.Action):
                     elif update_key == "r":
                         dict["Personal"]["Region"] = value
                     elif update_key == "s":
-                        dict["Personal"]["Search"] = value
+                        dict["Personal"]["Category"] = value
             elif update_key == "rm":
                 dict["Keywords"] = {}
 
@@ -39,7 +39,7 @@ class UpdateDataJson(argparse.Action):
             data = {
                 "Personal": {
                     "Region": "INSERT REGION HERE",
-                    "Search": "INSERT SEARCH HERE"
+                    "Category": "INSERT SEARCH HERE"
                 },
                 "Keywords": {}
             }
@@ -47,7 +47,7 @@ class UpdateDataJson(argparse.Action):
             with open(FILE_NAME, "w") as file:
                 json.dump(data, file)
 
-class AddKeyword(UpdateDataJson):
+class AddKeywords(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("k", values)
         print("Keyword(s): " + str(values) + " Added")
@@ -57,10 +57,10 @@ class UpdateRegion(UpdateDataJson):
         self.update_json("r", values)
         print("Region Updated To: " + values[0])
 
-class UpdateSearch(UpdateDataJson):
+class UpdateCategory(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
         self.update_json("s", values)
-        print("Search Updated To: " + values[0])
+        print("Category Updated To: " + values[0])
 
 class RemoveKeywords(UpdateDataJson):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -69,9 +69,10 @@ class RemoveKeywords(UpdateDataJson):
 
 def initArgParse():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--add-keyword", action=AddKeyword, nargs='+')
-    parser.add_argument("--update-region", action=UpdateRegion, nargs=1)
-    parser.add_argument("--update-search", action=UpdateSearch, nargs=1)
-    parser.add_argument("--remove-keywords", action=RemoveKeywords, nargs=0)
-    parser.add_argument("--keywords", action=ShowKeywords, nargs=0)
+    parser.add_argument("--add-keywords", action=AddKeywords, nargs='+', help="Add Keyword(s) To Search For")
+    parser.add_argument("--update-region", action=UpdateRegion, nargs=1, help="Update Region To Search Through")
+    parser.add_argument("--update-category", action=UpdateCategory, nargs=1, help="Update Category To Search Through")
+    parser.add_argument("--remove-keywords", action=RemoveKeywords, nargs=0, help="Removes All Keywords")
+    parser.add_argument("--settings", action=ShowSettings, nargs=0, help="Displays Current Settings")
+    parser.add_argument("-n", "--num-pages", type=int, dest="num_pages", help="Number Of Pages To Search Through");
     return parser.parse_args()

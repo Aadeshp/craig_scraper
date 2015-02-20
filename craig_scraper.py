@@ -34,14 +34,12 @@ class CraigsList:
 
         # Start a thread for each post and then join them into the main thread
         threads = [threading.Thread(target=self.collect_data, args=(url, self.keywords)) for url in self.get_urls()]
-
+    
         for t in threads:
             t.start()
 
         for t in threads:
             t.join()
-
-        #print(self)
 
     def collect_data(self, url, keywords):
         """Determines if any of the search keywords appear in the post, if so it will increment the keyword's freq and enqueue a Post tuple"""
@@ -99,10 +97,15 @@ if __name__ == "__main__":
     start = time.time()
     p = initArgParse()
 
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or p.num_pages:
         j = JSONReader("data.json")
-        c = CraigsList(j.get_region(), j.get_search(), j.get_keywords())
-        c.begin_queries()
+        c = CraigsList(j.get_region(), j.get_category(), j.get_keywords())
+
+        if p.num_pages:
+            c.begin_queries(int(p.num_pages))
+        else:
+            c.begin_queries()
+
         print(c)
 
     end = time.time()

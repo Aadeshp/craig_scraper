@@ -6,7 +6,7 @@ class JSONReader:
     def __init__(self, json_file):
         self.load_json(json_file)
         self.region = self.data["Personal"]["Region"]
-        self.search = self.data["Personal"]["Search"]
+        self.category = self.data["Personal"]["Category"]
         self.keywords = self.data["Keywords"]
 
     @property
@@ -27,8 +27,8 @@ class JSONReader:
     def get_region(self):
         return self.region
 
-    def get_search(self):
-        return self.search
+    def get_category(self):
+        return self.category
 
     def get_keywords(self):
         return self.keywords
